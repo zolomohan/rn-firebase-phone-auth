@@ -11,7 +11,6 @@ export default function App() {
   async function signIn(phoneNumber) {
     try {
       const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-      console.log(confirmation)
       setConfirm(confirmation);
     } catch (error) {
       alert(error);
