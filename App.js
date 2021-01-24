@@ -6,7 +6,7 @@ import Authenticated from './screens/Authenticated';
 
 export default function App() {
   const [confirm, setConfirm] = useState(null);
-  const [authenticated, setAutheticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
 
   async function signIn(phoneNumber) {
     try {
@@ -17,9 +17,10 @@ export default function App() {
     }
   }
 
-  async function confirmOTP(otp) {
+  async function confirmVerificationCode(code) {
     try {
-      confirm.confirm(otp);
+      await confirm.confirm(code);
+      setConfirm(null);
     } catch (error) {
       alert('Invalid code');
     }
@@ -27,13 +28,15 @@ export default function App() {
 
   auth().onAuthStateChanged((user) => {
     if(user) {
-      setAutheticated(true);
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
     }
   })
 
   if (authenticated) return <Authenticated />;
 
-  if (confirm) return <VerifyCode onSubmit={confirmOTP} />;
+  if (confirm) return <VerifyCode onSubmit={confirmVerificationCode} />;
 
   return <PhoneNumber onSubmit={signIn} />;
 }
