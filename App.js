@@ -1,30 +1,40 @@
 import React, { useState } from 'react';
 import auth from '@react-native-firebase/auth';
 import PhoneNumber from './screens/PhoneNumber';
-import OTPScreen from './screens/OTP';
-import Authorized from './screens/Authorized';
+import VerifyCode from './screens/VerifyCode';
+import Authenticated from './screens/Authenticated';
 
 export default function App() {
   const [confirm, setConfirm] = useState(null);
-  const [authorized, setAuthorized] = useState(false);
+  const [authenticated, setAutheticated] = useState(false);
 
-  async function signInWithPhoneNumber(phoneNumber) {
-    const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
-    setConfirm(confirmation);
+  async function signIn(phoneNumber) {
+    try {
+      const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+      console.log(confirmation)
+      setConfirm(confirmation);
+    } catch (error) {
+      alert(error);
+    }
   }
 
   async function confirmOTP(otp) {
     try {
-      await confirm.confirm(otp);
-      setAuthorized(true);
+      confirm.confirm(otp);
     } catch (error) {
       alert('Invalid code');
     }
   }
 
-  if (authorized) return <Authorized />;
+  auth().onAuthStateChanged((user) => {
+    if(user) {
+      setAutheticated(true);
+    }
+  })
 
-  if (confirm) return <OTPScreen onSubmit={confirmOTP} />;
+  if (authenticated) return <Authenticated />;
 
-  return <PhoneNumber onSubmit={signInWithPhoneNumber} />;
+  if (confirm) return <VerifyCode onSubmit={confirmOTP} />;
+
+  return <PhoneNumber onSubmit={signIn} />;
 }

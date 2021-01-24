@@ -4,17 +4,16 @@ import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 export default function PhoneNumber(props) {
   const [phoneNumber, setPhoneNumber] = useState(null);
 
-  const onSubmit = () => props.onSubmit(phoneNumber);
-
   return (
     <View style={styles.screen}>
       <Text style={styles.text}>Enter Phone Number</Text>
       <TextInput
+        autoFocus
         style={styles.input}
         value={phoneNumber}
         onChangeText={setPhoneNumber}
       />
-      <Button title="Phone Number Sign In" onPress={onSubmit} />
+      <Button title="Phone Number Sign In" onPress={() => props.onSubmit(phoneNumber)} />
     </View>
   );
 }
