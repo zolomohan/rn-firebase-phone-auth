@@ -6,6 +6,7 @@ export default function Authenticated() {
   return (
     <View style={styles.screen}>
       <Text style={styles.text}>You're Logged in</Text>
+      <Text style={styles.phoneNumber}>{auth().currentUser.phoneNumber}</Text>
       <View style={{ marginTop: 30 }}>
         <Button title="Signout" onPress={() => auth().signOut()} />
       </View>
@@ -30,5 +31,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 25,
+  },
+  phoneNumber: {
+    fontSize: 21,
+    marginTop: 20,
   },
 });
